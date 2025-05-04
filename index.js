@@ -31,6 +31,9 @@ app.post('/scrape', async (req, res) => {
             startDate: new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
             combineInstallments: false,
             showBrowser: false,
+            launchOptions: {
+                args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            },
         };
 
         const scraper = createScraper(options);
