@@ -1,8 +1,7 @@
-# Use the official Node.js image
 FROM node:20-slim
 
-# Install required dependencies for Puppeteer (Chromium)
-RUN apt-get update && apt-get install -y \
+# Install necessary dependencies for Puppeteer + Chromium
+RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     ca-certificates \
     fonts-liberation \
@@ -20,22 +19,21 @@ RUN apt-get update && apt-get install -y \
     libxdamage1 \
     libxrandr2 \
     xdg-utils \
-    **libgbm1** \    # <-- Add this line
-    --no-install-recommends \
+    libgbm1 \
  && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and install dependencies
+# Install dependencies
 COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the app
 COPY . .
 
-# Expose the port the app runs on
+# Expose the port
 EXPOSE 3001
 
-# Start the application
+# Start the app
 CMD ["npm", "start"]
